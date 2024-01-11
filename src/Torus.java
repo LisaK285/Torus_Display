@@ -14,7 +14,7 @@ public class Torus {
 	}
 	
 	
-	public static double[][][] getTheCoordinates(double innnerRadius, double outerRadius, int x_amountsCircle, int x_coordinatePointsPerCircle)
+	public double[][][] getTheCoordinates(double innnerRadius, double outerRadius, int x_amountsCircle, int x_coordinatePointsPerCircle)
 	{
 		double[][][] coordinates = new double[numCircles][pointsPerCircle][3];
 		
@@ -30,12 +30,11 @@ public class Torus {
 				double currentInnerAngle = getCurrentAngle(numCircles, currentInnerPoint);
 				
 				coordinates[currentOuterPoint][currentInnerPoint][0] = ((outerRadius + innnerRadius * Math.cos(currentInnerAngle)) * Math.cos(currentOuterAngle));
-				coordinates[currentOuterPoint][currentInnerPoint][1] = ((outerRadius+ innnerRadius*Math.cos(currentInnerAngle))*Math.sin(currentOuterAngle));
-				coordinates[currentOuterPoint][currentInnerPoint][2] = innnerRadius*Math.sin(currentInnerAngle);
+				coordinates[currentOuterPoint][currentInnerPoint][1] = ((outerRadius + innnerRadius * Math.cos(currentInnerAngle)) * Math.sin(currentOuterAngle));
+				coordinates[currentOuterPoint][currentInnerPoint][2] = innnerRadius * Math.sin(currentInnerAngle);
 				
-				for(int projectedCoordinate = 0; projectedCoordinate < coordinates.length; projectedCoordinate++) {
-					
-					coordinates[currentOuterPoint][currentInnerPoint] = viewerProjection(coordinates[currentOuterPoint][currentInnerPoint][projectedCoordinate]);
+				for(int projectedCoordinate = 0; projectedCoordinate < 1; projectedCoordinate++) {
+					coordinates[currentOuterPoint][currentInnerPoint] = viewerProjection(coordinates[currentOuterPoint][currentInnerPoint]);
 				}
 			}
 		}
@@ -79,27 +78,31 @@ public class Torus {
 	}
 	
 	
-	public static double[] viewerProjection(double coordinate) {
+	public static double[] viewerProjection(double[] coordinate) {
 		double[] viewerPosition = {0, 0, -50};
 		double[] displayedVector = new double[3];
 		double[] directionVector = new double[3];
+		double s = (viewerPosition[2]/(directionVector[2]-viewerPosition[2]));
+		double[] finalVector = new double[2];
 		
 		for(int i = 0; i < directionVector.length; i++) {
-			directionVector[i] = coordinate;
+			directionVector[i] = coordinate[i] - viewerPosition[i];
 		}
 		
 		for (int newPos = 0; newPos < viewerPosition.length; newPos++) {
 			displayedVector[newPos] = viewerPosition[newPos] + (1.2 * directionVector[newPos]);
 		}
 		
-		return displayedVector;
+		for (int index = 0; index < viewerPosition.length-1; index++) {
+			finalVector[index] = displayedVector[index] * s;
+		} 
+		
+		return finalVector;
 	}
 	
 	
 
 public static void main(String[] args) {
-	
-	var test = getTheCoordinates(10, 20, numCircles, pointsPerCircle);
 		
 		/*
 		 * x = (R+r * cos(v))cos(u)
