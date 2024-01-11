@@ -39,7 +39,7 @@ class TorusFrame extends JComponent{
 		
 		torusMainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		torusMainFrame.getContentPane().add(new TorusFrame());
-
+//Test
 	}
 
 }
