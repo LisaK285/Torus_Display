@@ -23,7 +23,7 @@ class TorusFrame extends JComponent{
 			
 			}
 		}
-	} //
+	} //stage this, jerk 
 		
 	public static void main(String[] args) {
 		
